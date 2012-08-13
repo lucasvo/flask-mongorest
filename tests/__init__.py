@@ -191,6 +191,15 @@ class MongoRestTestCase(unittest.TestCase):
         self.assertEqual(obj['name'], 'namevalue2')
         self.assertEqual(obj['upper_name'], 'NAMEVALUE2')
 
+        resp = self.app.put('/testfields/%s/' % obj['id'], data=json.dumps({
+            'name': 'namevalue2',
+            'upper_name': None,
+        }))
+        response_success(resp)
+        obj = json.loads(resp.data)
+        self.assertEqual(obj['name'], 'namevalue2')
+        self.assertEqual(obj['upper_name'], None)
+
     def test_get(self):
         resp = self.app.get('/user/')
         objs = json.loads(resp.data)['data']
